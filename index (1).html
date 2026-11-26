@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#32182b">
+<title>Diciembre contigo ❤️</title>
+<style>
+:root{--bg:#170e1b;--panel:#2b1828;--gold:#edc58b;--cream:#fff0df;--pink:#f1b5c8;--wine:#9d3e59}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--cream);font-family:Georgia,'Times New Roman',serif;background:radial-gradient(ellipse at top,#653047 0%,transparent 53%),linear-gradient(160deg,#160d1b,#35192d,#160d1b)}
+main{width:min(980px,100%);margin:auto;padding:36px 16px 54px;text-align:center;position:relative;z-index:1}.heart{font-size:36px;color:var(--pink);animation:pulse 2s infinite}@keyframes pulse{50%{transform:scale(1.13)}}
+h1{font-size:clamp(34px,8vw,58px);color:var(--gold);font-weight:normal;margin:12px 0}.subtitle{line-height:1.85;color:#f6dce5}.counter{display:inline-block;margin:20px 0 8px;padding:11px 20px;border:1px solid #d5ad79;border-radius:40px;color:var(--gold);background:#ffffff0b}
+.calendar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:28px}.door{min-height:135px;padding:12px 5px;border-radius:17px;border:1px solid #e1bb84;color:var(--cream);background:linear-gradient(145deg,#9e415b,#57263c);font-family:inherit;cursor:pointer;box-shadow:0 7px 18px #0003;transition:.2s}.door:hover:not(:disabled){transform:translateY(-4px);filter:brightness(1.12)}.door.locked{background:linear-gradient(145deg,#403747,#24202b);border-color:#67596c;color:#c4b8c6;cursor:not-allowed;opacity:.92}.door.opened{background:linear-gradient(145deg,#b45c70,#713449)}.door-icon{display:block;font-size:30px;margin-bottom:8px}.door-day{font-size:15px}.door-status{display:block;font-size:11px;opacity:.82;margin-top:5px}
+.footer{margin-top:34px;color:#e6b8c8;font-size:14px;line-height:1.8}.snow{position:fixed;top:-30px;pointer-events:none;z-index:0;animation:snowfall linear infinite;color:white}@keyframes snowfall{to{transform:translateY(110vh) rotate(180deg)}}
+.modal{display:none;position:fixed;inset:0;padding:16px;background:#080510e8;z-index:5;align-items:center;justify-content:center}.modal.visible{display:flex}.modal-card{width:min(500px,100%);max-height:90vh;overflow-y:auto;padding:25px 22px;border-radius:22px;border:1px solid var(--gold);background:linear-gradient(145deg,#783149,#35192e);box-shadow:0 0 45px #e6a8c322;animation:pop .25s ease}@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}.modal-card h2{color:var(--gold);font-weight:normal;font-size:27px}.modal-text{white-space:pre-line;line-height:1.9;font-size:17px;text-align:left}.modal-image{display:none;width:100%;max-height:380px;object-fit:contain;border-radius:14px;margin:16px 0;background:#160e1b}.modal-image.show{display:block}.close-button{margin-top:22px;border:0;border-radius:30px;padding:12px 24px;background:var(--gold);color:#492236;cursor:pointer;font-family:inherit;font-size:15px}
+
+.admin-tools{margin:16px auto 0;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.admin-button{border:1px solid var(--gold);background:#ffffff10;color:var(--cream);padding:10px 16px;border-radius:28px;cursor:pointer;font:inherit}.admin-note{font-size:12px;color:#e9c5d3;margin-top:8px}
+
+/* Entrada con contraseña */
+#login-screen{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at top,#653047 0%,transparent 55%),linear-gradient(160deg,#160d1b,#35192d,#160d1b);}
+.login-card{width:min(440px,100%);padding:30px 24px;border:1px solid var(--gold);border-radius:24px;background:linear-gradient(145deg,#783149,#35192e);box-shadow:0 0 45px #e6a8c322;text-align:center;}
+.login-card h2{color:var(--gold);font-weight:normal;font-size:28px;margin:12px 0;}
+.login-card p{line-height:1.75;color:#f6dce5;}
+#login-password{width:100%;margin:12px 0;padding:13px;border-radius:12px;border:1px solid #d5ad79;background:#1a1020;color:var(--cream);font:inherit;text-align:center;letter-spacing:2px;}
+#login-submit{border:0;border-radius:30px;padding:12px 24px;background:var(--gold);color:#492236;cursor:pointer;font:inherit;}
+#login-error{min-height:22px;color:#ffd2dd;font-size:14px;margin-top:12px;}
+@media(max-width:650px){main{padding:27px 13px 40px}.calendar{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.door{min-height:105px}.door-icon{font-size:25px}.door-day{font-size:14px}}@media(max-width:360px){.calendar{gap:6px}.door{min-height:94px}}
+</style>
+</head>
+<body>
+<div id="login-screen">
+  <div class="login-card">
+    <div class="heart" id="secret-heart" title="Pulsa cinco veces para acceso de propietario">♥</div>
+    <h2>Un diciembre para nosotros</h2>
+    <p>Este calendario guarda pequeños recuerdos y sorpresas.<br>Introduce la contraseña para entrar. ❤️</p>
+    <form id="login-form">
+      <input id="login-password" type="password" autocomplete="off" placeholder="Contraseña" aria-label="Contraseña" required>
+      <button id="login-submit" type="submit">Entrar ❤️</button>
+    </form>
+    <div id="login-error" role="status"></div>
+    <p style="font-size:12px;opacity:.8">Un pequeño lugar lleno de recuerdos.</p>
+  </div>
+</div>
+<main>
+<div class="heart">♥</div>
+<h1>Diciembre contigo</h1>
+<p class="subtitle">31 días, 31 pequeños recuerdos.<br>He preparado algo para ti. Abre una ventanita cada día ❤️</p>
+<div class="counter" id="counter"></div>
+<div class="admin-tools"><button class="admin-button" onclick="adminAccess()">🔑 Abrir todos los días (modo mío)</button><button class="admin-button" onclick="adminExit()" id="admin-exit" style="display:none">Salir del modo completo</button></div><div class="admin-note" id="admin-note">Los días se desbloquean por fecha. El modo completo es para ti.</div>
+<div class="calendar" id="calendar"></div>
+<div class="footer">Hecho con mucho cariño para Andrea ♥<br>31 pequeñas formas de recordarte lo especial que eres.</div>
+</main>
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+<div class="modal-card"><div style="font-size:35px">💌</div><h2 id="modal-title"></h2><img id="modal-image" class="modal-image" alt="Recuerdo"><div id="modal-text" class="modal-text"></div><button class="close-button" onclick="closeGift()">Cerrar ♥</button></div>
+</div>
+<script>
+// CALENDARIO DE ANDREA. Para añadir foto, sube el archivo al repositorio
+// y escribe su nombre en el campo image de ese día (ejemplo: "dia-2.jpg").
+const YEAR=2026;
+const gifts=[
+{title:"Día 1 · Bienvenida ❤️",text:"Andrea, he preparado esto para ti porque quería que este diciembre fuese un poquito diferente. Cada día vas a tener una pequeña sorpresa, un recuerdo, una foto o unas palabras mías. Quería que tuvieses algo que abrir cada día y que, aunque sea durante un ratito, te saque una sonrisa y te recuerde lo muchísimo que te quiero. No son 31 regalos, son 31 pedacitos de todo lo que siento por ti. ❤️",image:""},
+{title:"Día 2 · Una foto nuestra",text:"Qué bonito es tener fotos contigo y poder volver a momentos que me hacen tan feliz. Y qué bonito pensar que todavía nos quedan muchísimas por hacer.",image:"dia-2.jpg.jpeg"},
+{title:"Día 3 · Otro recuerdo",text:"No sé qué tiene esta foto, pero cada vez que la veo me recuerda lo feliz que me hace tenerte en mi vida. Ojalá pudiera guardar todos nuestros momentos así de cerca.",image:"dia-3.jpg.jpeg"},
+{title:"Día 4 · Tu sonrisa",text:"Mi parte favorita de muchos de mis días es compartirlos contigo. Da igual el plan, el lugar o lo que hagamos, contigo todo tiene algo diferente.",image:"dia-4.jpg.jpeg"},
+{title:"Día 5 · Un recuerdo bonito",text:"Quiero que algún día tengamos tantísimas fotos que no sepamos ni por dónde empezar a recordar. Y que al verlas nos demos cuenta de todo lo bonito que hemos vivido.",image:"dia-5.jpg.jpeg"},
+{title:"Día 6 · Lo que me haces sentir",text:"Me encanta esa tranquilidad que siento cuando estoy contigo, esa sensación de estar a gusto y de que no necesito nada más en ese momento.",image:"dia-6.jpg.jpeg"},
+{title:"Día 7 · Nuestras tonterías",text:"Ojalá nunca nos falten las tonterías, las risas, las conversaciones sin sentido y esos momentos que solo nosotros entendemos.",image:"dia-7.jpg.jpeg"},
+{title:"Día 8 · Una pequeña confesión",text:"A veces no sé cómo explicarte todo lo que me haces sentir, pero sí sé que tenerte cerca es de las cosas más bonitas que me han pasado.",image:""},
+{title:"Día 9 · Una foto especial",text:"Si pudiera volver a vivir algunos momentos, elegiría muchos de los que he compartido contigo. No porque sean perfectos, sino porque son nuestros.",image:""},
+{title:"Día 10 · Un plan contigo",text:"Me gusta pensar que estamos creando una historia llena de pequeños recuerdos, de esos que quizá ahora parecen normales pero que algún día nos encantará recordar.",image:""},
+{title:"Día 11 · Un día cualquiera",text:"Qué suerte poder tener a una persona con la que compartir tantas cosas y a la que contarle hasta lo más pequeño de mi día.",image:""},
+{title:"Día 12 · Lo que admiro de ti",text:"Admiro muchas cosas de ti, tu forma de ser, tus detalles, tu manera de hacer que algunos momentos sean especiales. Me encanta que seas tú.",image:""},
+{title:"Día 13 · Un día normal",text:"No necesito que todos nuestros días sean especiales, porque hasta un día normal contigo puede convertirse en un recuerdo que me encante.",image:""},
+{title:"Día 14 · Volvería a elegirte",text:"Si volviese al principio y supiese todo lo bonito que iba a vivir contigo, volvería a querer conocerte, volvería a hablarte y volvería a elegirte.",image:""},
+{title:"Día 15 · Una foto que me encanta",text:"Qué bonito es tener una foto y acordarme no solo de cómo estábamos, sino de lo que sentía estando a tu lado.",image:"regalo-16.jpg.jpg"},
+{title:"Día 16 · Una pequeña pista 🎁",text:"Tengo una cosita preparada para ti y me hace muchísima ilusión que llegue el momento de dártela. No es solo el regalo, también son las ganas que tengo de verte y compartirlo contigo.",image:""},
+{title:"Día 17 · Mi lugar favorito",text:"Mi lugar favorito no tiene por qué ser un sitio concreto. Muchas veces es simplemente estar contigo, disfrutando de cualquier momento.",image:""},
+{title:"Día 18 · Queda poquito",text:"Ya llevamos un montón de ventanitas abiertas, pero todavía nos quedan recuerdos por guardar, momentos por vivir y muchas cosas bonitas que espero compartir contigo.",image:""},
+{title:"Día 19 · Una foto más",text:"Cada vez que miro una foto nuestra, me entran ganas de volver a verte, de pasar otro día contigo y de seguir haciendo recuerdos que sean solo nuestros.",image:""},
+{title:"Día 20 · Qué bonito coincidir",text:"Entre tantas personas, qué bonito que nos encontrásemos nosotros. Qué bonito que empezásemos a conocernos y que hoy tenga tantas cosas que agradecer por tenerte.",image:""},
+{title:"Día 21 · Otro recuerdo nuestro",text:"Me encanta nuestra historia, no porque todo tenga que ser perfecto, sino porque cada día vamos sumando momentos, aprendiendo, compartiendo y queriéndonos.",image:""},
+{title:"Día 22 · Seis meses ❤️",text:"Hoy me paro a pensar que hace seis meses empezó algo que ahora es tan importante para mí. Seis meses de conocernos, de compartir momentos, de reírnos, de hablar, de tener recuerdos que ya forman parte de nosotros. Me hace muchísima ilusión todo lo que hemos vivido en este tiempo y, sobre todo, todo lo que todavía nos queda. Gracias por estos seis meses, Andrea. No sabes lo feliz que me hace tenerte en mi vida.",image:""},
+{title:"Día 23 · Cuando empezamos a hablar",text:"Hoy me acuerdo de aquel día en el que empezamos a hablar. Quién me iba a decir que una conversación que comenzó como cualquier otra iba a convertirse en algo tan importante para mí. Me alegro muchísimo de haber coincidido contigo, de haberte conocido poquito a poco y de que aquella conversación fuese el comienzo de nuestra historia. Si pudiera volver a aquel día, volvería a contestarte una y mil veces.",image:""},
+{title:"Día 24 · Feliz Navidad 🎄",text:"Feliz Navidad, Andrea. ❤️ Ojalá hoy tengas un día precioso, lleno de ilusión, cariño y momentos que te hagan feliz. Yo quería aprovechar este día para recordarte que uno de los regalos más bonitos que me ha dado este año ha sido tenerte en mi vida. Y también me acuerdo de aquel 24 de julio, cuando te acompañé al gimnasio, un día que guardo con cariño porque fue otro ratito contigo que se convirtió en recuerdo. Te quiero muchísimo y espero que esta Navidad sea una de tantas que podamos compartir.",image:""},
+{title:"Día 25 · Un pensamiento para ti",text:"Aunque se acabe la Navidad, no se acaba ni un poquito de todo el cariño que te tengo. Quiero que te acuerdes de lo importante que eres para mí también en los días más normales.",image:""},
+{title:"Día 26 · Nosotros",text:"Si tuviese que elegir algo que me gustaría seguir haciendo una y otra vez, sería seguir creando recuerdos contigo. Que nunca nos falten fotos que nos hagan sonreír al volver a verlas.",image:""},
+{title:"Día 27 · Cuatro meses juntos ❤️",text:"Andrea, hoy cumplimos cuatro meses, y no sabes lo feliz que me hace estar contigo. Me encanta compartir mis días contigo, hablar contigo, reírnos por cualquier tontería, hacer planes y hasta esos ratitos sencillos en los que no hace falta hacer nada especial porque estar a tu lado ya es suficiente. En estos cuatro meses hemos ido creando recuerdos que guardo con muchísimo cariño, y me hace ilusión pensar en todo lo que todavía nos queda por vivir. Gracias por estar en mi vida, por ser tú y por hacer que estar contigo sea algo tan bonito. Ojalá sigamos sumando meses, momentos, fotos, aventuras y un montón de pequeñas cosas que algún día recordaremos sonriendo. Feliz 4 meses, amorcito. Te quiero muchísimo. ❤️",image:"regalo-27.jpg.png"},
+{title:"Día 28 · Nuestro primer beso",text:"Hoy toca recordar nuestro primer beso. Un momento de nuestra historia que siempre voy a guardar de una manera especial. Me encanta pensar en aquel día, en cómo empezó todo y en lo que hemos ido construyendo desde entonces. Qué bonito tener ese recuerdo contigo y qué bonito que nuestra historia siga sumando momentos que algún día recordaremos con la misma ilusión.",image:"primer-beso.jpg.jpeg"},
+{title:"Día 29 · Otra sorpresa",text:"Otra pequeña sorpresa para ti. Ojalá cuando la veas te acuerdes de que detrás de cada detalle hay alguien que piensa en ti, que se acuerda de ti y que tiene muchísimas ganas de verte.",image:"regalo-29.jpg.jpeg"},
+{title:"Día 30 · Todo lo que nos queda",text:"Se termina el año, pero no las ganas de seguir haciendo cosas contigo. Nos quedan fotos que hacer, lugares a los que ir, tardes que pasar juntos, conversaciones, risas y muchísimos recuerdos que todavía no existen.",image:""},
+{title:"Día 31 · Nuestro último regalo ❤️",text:"Andrea, llegamos al último día de este calendario y quería terminarlo diciéndote algo que no cabe en una foto ni en una pequeña frase. Gracias por estos meses, por cada momento que hemos compartido, por las risas, por las conversaciones, por tu voz, por tu cariño y por todo lo que haces que sea tan bonito tenerte en mi vida. Me hace mucha ilusión pensar en todo lo que hemos vivido y en todo lo que todavía nos queda por vivir. Ojalá el año que viene nos regale muchísimos más momentos juntos, más fotos, más abrazos, más planes y más recuerdos que algún día podamos mirar y decir qué bonito fue aquello. Te quiero muchísimo. Feliz último día del año y feliz comienzo de todo lo que nos queda. ❤️",image:""}
+];
+// Las claves se comparan como hashes para que no aparezcan en texto plano.
+// IMPORTANTE: en una web estática esto no es autenticación segura; el código y las fotos siguen siendo públicos.
+const ANDREA_PASSWORD_HASH = "141d6c099cf8be9b17706f471bab242a15ac123926fbaf4808973b62d097e4b0";
+const OWNER_PASSWORD_HASH = "08cae1093efbc24f57ab03212b27621a9bfb13069b357f8240b16636057cdfc3";
+let adminUnlocked = false;
+let loggedIn = false;
+async function hashPassword(value){
+  const data = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+document.getElementById("login-form").addEventListener("submit", async function(e){
+  e.preventDefault();
+  const entered=document.getElementById("login-password").value;
+  const hash=await hashPassword(entered);
+  const error=document.getElementById("login-error");
+  if(hash===ANDREA_PASSWORD_HASH){
+    loggedIn=true; adminUnlocked=false; document.getElementById("login-screen").style.display="none";
+    error.textContent=""; document.getElementById("calendar").innerHTML=""; createCalendar(); updateCounter();
+  }else if(hash===OWNER_PASSWORD_HASH){
+    loggedIn=true; adminUnlocked=true; document.getElementById("login-screen").style.display="none";
+    document.getElementById("admin-exit").style.display="inline-block";
+    document.getElementById("admin-note").textContent="Modo propietario activado: los 31 días están disponibles. 🔓";
+    document.getElementById("calendar").innerHTML=""; createCalendar(); updateCounter();
+  }else{error.textContent="Esa contraseña no es correcta. Inténtalo otra vez.";document.getElementById("login-password").value="";}
+});
+// Cinco pulsaciones en el corazón abren el acceso oculto de propietario.
+let secretHeartClicks=0;
+document.getElementById("secret-heart").addEventListener("click",async function(){
+  secretHeartClicks++; if(secretHeartClicks>=5){secretHeartClicks=0; const entered=prompt("Acceso de propietario: introduce tu clave."); if(entered===null)return; if(await hashPassword(entered)===OWNER_PASSWORD_HASH){loggedIn=true;adminUnlocked=true;document.getElementById("login-screen").style.display="none";document.getElementById("admin-exit").style.display="inline-block";document.getElementById("admin-note").textContent="Modo propietario activado: los 31 días están disponibles. 🔓";document.getElementById("calendar").innerHTML="";createCalendar();updateCounter();}else alert("Clave de propietario incorrecta.");}
+});
+function adminExit(){
+  adminUnlocked=false;
+  document.getElementById("admin-exit").style.display="none";
+  document.getElementById("admin-note").textContent="Los días se desbloquean por fecha. El modo completo es para ti.";
+  document.getElementById("calendar").innerHTML="";createCalendar();
+}
+function unlockedDay(){if(adminUnlocked)return 31;const now=new Date();if(now.getFullYear()<YEAR|| (now.getFullYear()===YEAR&&now.getMonth()<11))return 0;if(now.getFullYear()===YEAR&&now.getMonth()===11)return now.getDate();if(now.getFullYear()>YEAR||(now.getFullYear()===YEAR&&now.getMonth()>11))return 31;return 0;}
+function updateCounter(){const now=new Date(),el=document.getElementById('counter');if(now.getFullYear()<YEAR||(now.getFullYear()===YEAR&&now.getMonth()<11)){el.textContent='🎄 La magia comienza el 1 de diciembre';}else if(now.getFullYear()===YEAR&&now.getMonth()===11){el.textContent=`🎁 Día ${now.getDate()} de diciembre · Un regalo para ti`;}else{el.textContent='❤️ Nuestro diciembre para recordar';}}
+function createSnow(){for(let i=0;i<30;i++){const f=document.createElement('div');f.className='snow';f.textContent=Math.random()>.5?'❄':'•';f.style.left=Math.random()*100+'vw';f.style.fontSize=(8+Math.random()*14)+'px';f.style.opacity=.2+Math.random()*.7;f.style.animationDuration=(6+Math.random()*12)+'s';f.style.animationDelay=(-Math.random()*15)+'s';document.body.appendChild(f);}}
+function createCalendar(){const c=document.getElementById('calendar'),unlock=unlockedDay();gifts.forEach((g,i)=>{const d=i+1,open=d<=unlock,b=document.createElement('button');b.className='door '+(open?'opened':'locked');b.disabled=!open;b.innerHTML=`<span class="door-icon">${open?'🎁':'🔒'}</span><span class="door-day">Día ${d}</span><span class="door-status">${open?'Abrir regalo':'Aún cerrado'}</span>`;if(open)b.addEventListener('click',()=>openGift(d));c.appendChild(b);});}
+function openGift(day){const g=gifts[day-1];document.getElementById('modal-title').textContent=g.title;document.getElementById('modal-text').textContent=g.text;const img=document.getElementById('modal-image');if(g.image&&g.image.trim()){img.src=g.image;img.classList.add('show');}else{img.removeAttribute('src');img.classList.remove('show');}document.getElementById('modal').classList.add('visible');}
+function closeGift(){document.getElementById('modal').classList.remove('visible');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeGift();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGift();});
+updateCounter();createSnow();createCalendar();
+</script>
+</body>
+</html>
